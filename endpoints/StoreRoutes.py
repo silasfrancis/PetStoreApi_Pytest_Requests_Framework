@@ -1,6 +1,7 @@
 import requests
 from endpoints import Endpoints
 from payload import StorePayload
+from utilities import readingJson
 import json
 
 
@@ -18,34 +19,25 @@ def placeOrder():
         "status": payload["status"],
         "complete": payload["complete"]
     }
-    save_file = open("StoreResponse.json", "w")
-    json.dump(feedback, save_file, indent = 6)
-    save_file.close()
-
+    readingJson.savingJsonResponseFile("StoreResponse.json", feedback)
     return response
 
 
 def getOrder():
-    with open('StoreResponse.json', 'r') as file:
-        data = json.load(file)
+    data = readingJson.readingJsonResponseFile("StoreResponse.json")
     id = data["id"]
-
     url = Endpoints.getorderUrl(id)
     response = requests.get(url)
     return response
 
 def deleteOrder():
-    with open ('StoreResponse.json', 'r') as file:
-        data = json.load(file)
+    data = readingJson.readingJsonResponseFile("StoreResponse.json")
     id = data["id"]
-
     url = Endpoints.deleteOrderUrl(id)
     response = requests.delete(url)
     feedback = {
 
     }
-    save_file = open("StoreResponse.json", "w")
-    json.dump(feedback, save_file, indent = 6)
-    save_file.close()
+    readingJson.savingJsonResponseFile("StoreResponse.json", feedback)
     return response
 

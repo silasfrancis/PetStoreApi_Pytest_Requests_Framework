@@ -1,5 +1,6 @@
 from payload import PetPayload
 from endpoints import Endpoints
+from utilities import readingJson
 import requests
 import json
 import random
@@ -30,17 +31,13 @@ def addPet():
         ],
         "status": payload["status"]
     }
-    save_file = open("PetResponse.json", "w")
-    json.dump(feedback, save_file, indent = 4)
-    save_file.close()
+    readingJson.savingJsonResponseFile("PetResponse.json", feedback)
 
     return response
 
 def getPet():
-    with open('PetResponse.json', 'r') as file:
-        data = json.load(file)
+    data = readingJson.readingJsonResponseFile("PetResponse.json")
     id = data["id"]
-
     url = Endpoints.getPetUrl(id)
     response = requests.get(url)
     return response
@@ -66,26 +63,21 @@ def updatePet():
         ],
         "status": ran_status
     }
-    save_file = open("PetResponse.json", "w")
-    json.dump(updated_data, save_file, indent = 4)
-    save_file.close()
+    readingJson.savingJsonResponseFile("PetResponse.json", updated_data)
 
     url = Endpoints.updatePetUrl()
     response = requests.put(url, json=updated_data)
     return response
 
 def deletePet():
-    with open('PetResponse.json', 'r') as file:
-        data = json.load(file)
+    data = readingJson.readingJsonResponseFile("PetResponse.json")
     id = data["id"]
-
     url = Endpoints.deletePetUrl(id)
     response = requests.delete(url)
     feedback = {
 
     }
-    save_file = open("PetResponse.json", "w")
-    json.dump(feedback, save_file, indent = 4)
-    save_file.close()
+    readingJson.savingJsonResponseFile("PetResponse.json", feedback)
+
     return response
 

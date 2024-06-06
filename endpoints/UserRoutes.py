@@ -1,16 +1,13 @@
 import requests
 from endpoints import Endpoints
 from payload import UserPayload
+from utilities import readingJson
 import json
 import random
 import string
 
 
 payload = UserPayload.payload()
-
-n = 7
-ran = ''.join(random.choices(string.ascii_uppercase + string.digits, k = n))
-ran_email = ran + "@gmail.com"
 
 def createUser():
     url = Endpoints.postUrl()
@@ -26,25 +23,19 @@ def createUser():
         "phone": payload["phone"],
         "userStatus": payload["userStatus"]
         }
-    save_file = open("UserResponse.json", "w")
-    json.dump(feedback, save_file, indent = 4)
-    save_file.close()
-
+    readingJson.savingJsonResponseFile("UserResponse.json", feedback)
     return response
 
 def getUser():
-    with open ('UserResponse.json', 'r') as file:
-        data = json.load(file)
+    data = readingJson.readingJsonResponseFile("UserResponse.json")
     username = data["username"]
-
     get_url = Endpoints.getUrl(username)
     get_response = requests.get(get_url)
     return get_response
 
 
 def updateUser():
-    with open ('UserResponse.json', 'r') as file:
-        data = json.load(file)
+    data = readingJson.readingJsonResponseFile("UserResponse.json")
     username = data["username"]
 
     updated_data = {
@@ -57,9 +48,7 @@ def updateUser():
         "phone": data["phone"],
         "userStatus": data["userStatus"]
     }
-    save_file = open("UserResponse.json", "w")
-    json.dump(updated_data, save_file, indent = 4)
-    save_file.close()
+    readingJson.savingJsonResponseFile("UserResponse.json", updated_data)
 
     update_url = Endpoints.updateUrl(username)
     update_response = requests.put(update_url, json=updated_data)
@@ -67,21 +56,17 @@ def updateUser():
 
 
 def deleteUser():
-    with open ('UserResponse.json', 'r') as file:
-        data = json.load(file)
+    data = readingJson.readingJsonResponseFile("UserResponse.json")
     username = data["username"]
-
     delete_url = Endpoints.deleteUrl(username)
     delete_response = requests.delete(delete_url)
+    feedback = {
 
-    # feedback = {
-    #
-    # }
-    # save_file = open("UserResponse.json", "w")
-    # json.dump(feedback, save_file, indent = 4)
-    # save_file.close()
-
+    }
+    readingJson.savingJsonResponseFile("UserResponse.json", feedback)
     return delete_response
 
-
+n = 7
+ran = ''.join(random.choices(string.ascii_uppercase + string.digits, k = n))
+ran_email = ran + "@gmail.com"
 

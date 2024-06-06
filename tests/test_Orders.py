@@ -2,6 +2,7 @@ from endpoints import StoreRoutes
 import json
 from payload import StorePayload
 from utilities.customLogger import LogGen
+from utilities import readingJson
 
 
 logger = LogGen.loggen()
@@ -33,13 +34,11 @@ def test_getOrderInfo():
     print(data_str)
 
     logger.info("**************** Validating Order Info *****************")
-
-    with open ('StoreResponse.json', 'r') as file:
-        data = json.load(file)
+    data = readingJson.readingJsonResponseFile("StoreResponse.json")
     petid = data["petId"]
     quantity = data["quantity"]
 
-    if data_res["petId"] == petid and data_res["quantity"] == quantity :
+    if data_res["petId"] == petid and data_res["quantity"] == quantity:
         assert True
         logger.info("**************** Order Info Validation Successful *****************")
     else:

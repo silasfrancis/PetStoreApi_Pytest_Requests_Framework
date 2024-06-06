@@ -1,8 +1,10 @@
 from endpoints import PetRoutes
 import json
 from utilities.customLogger import LogGen
+from utilities import readingJson
 
 logger = LogGen.loggen()
+
 
 logger.info("**************** Starting Store Module Test *****************")
 def test_addPet():
@@ -29,25 +31,24 @@ def test_getPet():
     print(data_str)
 
     logger.info("**************** Validating Pet Data *****************")
-    with open ('PetResponse.json', 'r') as file:
-        data = json.load(file)
-        pet_name = data["name"]
-        tag_id = data["tags"][0]["id"]
-        tag_name = data["tags"][0]["name"]
-        status = data["status"]
+    data = readingJson.readingJsonResponseFile("PetResponse.json")
+    pet_name = data["name"]
+    tag_id = data["tags"][0]["id"]
+    tag_name = data["tags"][0]["name"]
+    status = data["status"]
 
-        if data_res["name"] == pet_name:
-            assert True
-        elif data_res["tags"][0]["id"] == tag_id:
-            assert True
-        elif data_res["tags"][0]["name"] == tag_name:
-            assert True
-        elif data_res["status"] == status:
-            assert True
-            logger.info("**************** Pet Data Validation Successful *****************")
-        else:
-            logger.info("**************** Pet Data Validation Failed *****************")
-            assert False
+    if data_res["name"] == pet_name:
+        assert True
+    elif data_res["tags"][0]["id"] == tag_id:
+        assert True
+    elif data_res["tags"][0]["name"] == tag_name:
+        assert True
+    elif data_res["status"] == status:
+        assert True
+        logger.info("**************** Pet Data Validation Successful *****************")
+    else:
+        logger.info("**************** Pet Data Validation Failed *****************")
+        assert False
 
 def test_updatePet():
     logger.info("**************** Updating Pet Data *****************")
@@ -55,27 +56,29 @@ def test_updatePet():
     if response.status_code==200:
         assert True
         logger.info("**************** Pet Data Updated*****************")
+    else:
+        logger.info("**************** Updating Pet Data Failed*****************")
+        assert False
     data_res= response.json()
     data_str = json.dumps(data_res, indent=4)
     print(data_str)
 
     logger.info("**************** Validating Updated Pet Data *****************")
-    with open ('PetResponse.json', 'r') as file:
-        data = json.load(file)
-        pet_name = data["name"]
-        tag_name = data["tags"][0]["name"]
-        status = data["status"]
+    data = readingJson.readingJsonResponseFile("PetResponse.json")
+    pet_name = data["name"]
+    tag_name = data["tags"][0]["name"]
+    status = data["status"]
 
-        if data_res["name"] == pet_name:
-            assert True
-        elif data_res["tags"][0]["name"] == tag_name:
-            assert True
-        elif data_res["status"] == status:
-            assert True
-            logger.info("**************** Pet Data Validation Successful *****************")
-        else:
-            logger.info("**************** Pet Data Validation Failed *****************")
-            assert False
+    if data_res["name"] == pet_name:
+        assert True
+    elif data_res["tags"][0]["name"] == tag_name:
+        assert True
+    elif data_res["status"] == status:
+        assert True
+        logger.info("**************** Pet Data Validation Successful *****************")
+    else:
+        logger.info("**************** Pet Data Validation Failed *****************")
+        assert False
 
 def test_deletePet():
     logger.info("**************** Deleting Pet *****************")
