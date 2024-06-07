@@ -1,7 +1,7 @@
 from endpoints import PetRoutes
 import json
 from utilities.customLogger import LogGen
-from utilities import readingJson
+from utilities import utilities
 
 logger = LogGen.loggen()
 
@@ -31,7 +31,7 @@ def test_getPet():
     print(data_str)
 
     logger.info("**************** Validating Pet Data *****************")
-    data = readingJson.readingJsonResponseFile("PetResponse.json")
+    data = utilities.readingJsonResponseFile("PetResponse.json")
     pet_name = data["name"]
     tag_id = data["tags"][0]["id"]
     tag_name = data["tags"][0]["name"]
@@ -64,7 +64,7 @@ def test_updatePet():
     print(data_str)
 
     logger.info("**************** Validating Updated Pet Data *****************")
-    data = readingJson.readingJsonResponseFile("PetResponse.json")
+    data = utilities.readingJsonResponseFile("PetResponse.json")
     pet_name = data["name"]
     tag_name = data["tags"][0]["name"]
     status = data["status"]

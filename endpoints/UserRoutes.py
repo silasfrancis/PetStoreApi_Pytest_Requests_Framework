@@ -1,8 +1,7 @@
 import requests
 from endpoints import Endpoints
 from payload import UserPayload
-from utilities import readingJson
-import json
+from utilities import utilities
 import random
 import string
 
@@ -23,11 +22,11 @@ def createUser():
         "phone": payload["phone"],
         "userStatus": payload["userStatus"]
         }
-    readingJson.savingJsonResponseFile("UserResponse.json", feedback)
+    utilities.savingJsonResponseFile("UserResponse.json", feedback)
     return response
 
 def getUser():
-    data = readingJson.readingJsonResponseFile("UserResponse.json")
+    data = utilities.readingJsonResponseFile("UserResponse.json")
     username = data["username"]
     get_url = Endpoints.getUrl(username)
     get_response = requests.get(get_url)
@@ -35,7 +34,7 @@ def getUser():
 
 
 def updateUser():
-    data = readingJson.readingJsonResponseFile("UserResponse.json")
+    data = utilities.readingJsonResponseFile("UserResponse.json")
     username = data["username"]
 
     updated_data = {
@@ -48,7 +47,7 @@ def updateUser():
         "phone": data["phone"],
         "userStatus": data["userStatus"]
     }
-    readingJson.savingJsonResponseFile("UserResponse.json", updated_data)
+    utilities.savingJsonResponseFile("UserResponse.json", updated_data)
 
     update_url = Endpoints.updateUrl(username)
     update_response = requests.put(update_url, json=updated_data)
@@ -56,14 +55,14 @@ def updateUser():
 
 
 def deleteUser():
-    data = readingJson.readingJsonResponseFile("UserResponse.json")
+    data = utilities.readingJsonResponseFile("UserResponse.json")
     username = data["username"]
     delete_url = Endpoints.deleteUrl(username)
     delete_response = requests.delete(delete_url)
     feedback = {
 
     }
-    readingJson.savingJsonResponseFile("UserResponse.json", feedback)
+    utilities.savingJsonResponseFile("UserResponse.json", feedback)
     return delete_response
 
 n = 7

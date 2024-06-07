@@ -1,8 +1,7 @@
 from payload import PetPayload
 from endpoints import Endpoints
-from utilities import readingJson
+from utilities import utilities
 import requests
-import json
 import random
 import string
 
@@ -31,22 +30,18 @@ def addPet():
         ],
         "status": payload["status"]
     }
-    readingJson.savingJsonResponseFile("PetResponse.json", feedback)
+    utilities.savingJsonResponseFile("PetResponse.json", feedback)
 
     return response
 
 def getPet():
-    data = readingJson.readingJsonResponseFile("PetResponse.json")
+    data = utilities.readingJsonResponseFile("PetResponse.json")
     id = data["id"]
     url = Endpoints.getPetUrl(id)
     response = requests.get(url)
     return response
 
 def updatePet():
-    n=7
-    ran_str = ''.join(random.choices(string.ascii_uppercase + string.digits, k = n))
-    ran_status = random.choice(["available", "pending", "sold"])
-
     updated_data = {
         "id": payload["id"],
         "category": {
@@ -63,21 +58,24 @@ def updatePet():
         ],
         "status": ran_status
     }
-    readingJson.savingJsonResponseFile("PetResponse.json", updated_data)
+    utilities.savingJsonResponseFile("PetResponse.json", updated_data)
 
     url = Endpoints.updatePetUrl()
     response = requests.put(url, json=updated_data)
     return response
 
 def deletePet():
-    data = readingJson.readingJsonResponseFile("PetResponse.json")
+    data = utilities.readingJsonResponseFile("PetResponse.json")
     id = data["id"]
     url = Endpoints.deletePetUrl(id)
     response = requests.delete(url)
     feedback = {
 
     }
-    readingJson.savingJsonResponseFile("PetResponse.json", feedback)
+    utilities.savingJsonResponseFile("PetResponse.json", feedback)
 
     return response
 
+n=7
+ran_str = ''.join(random.choices(string.ascii_uppercase + string.digits, k = n))
+ran_status = random.choice(["available", "pending", "sold"])

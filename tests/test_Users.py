@@ -1,7 +1,7 @@
 from endpoints import UserRoutes
 import json
 from utilities.customLogger import LogGen
-from utilities import readingJson
+from utilities import utilities
 
 
 logger = LogGen.loggen()
@@ -34,7 +34,7 @@ def test_GetUserData():
     print(data_str)
 
     logger.info("**************** Validating User Data *****************")
-    data = readingJson.readingJsonResponseFile("UserResponse.json")
+    data = utilities.readingJsonResponseFile("UserResponse.json")
     user_id = data["id"]
     firstname = data["firstName"]
 
@@ -57,7 +57,7 @@ def test_UpdateUserData():
     print(data_str)
 
     logger.info("**************** Validating Updated Data *****************")
-    data = readingJson.readingJsonResponseFile("UserResponse.json")
+    data = utilities.readingJsonResponseFile("UserResponse.json")
     user_id = data["id"]
 
     if data_res["code"]== 200 and data_res["message"] == user_id:
